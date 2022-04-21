@@ -8,7 +8,6 @@ public interface Manager {
     public Graphics2D getDrawingGraphics();
 
     public void addShape(Shape shape);
-    public void addShapes(Collection<Shape> shapes);
 
     public Stack<Shape> getShapes();
 

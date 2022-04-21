@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
-public class Pencil extends DrawingTool {
+public class PencilTool extends DrawingTool {
     private int prevX1, prevY1;
     private boolean isDragging = false;
     private PencilLine previewShape;
