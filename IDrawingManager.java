@@ -2,7 +2,10 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Stack;
 
-public interface Manager {
+/** 
+ * Interface cho DrawingManager
+ */
+public interface IDrawingManager {
     public void draw();
 
     public Graphics2D getDrawingGraphics();

@@ -15,7 +15,7 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    public void draw(Drawable area, Graphics2D g2d) {
+    public void draw(IDrawable area, Graphics2D g2d) {
         area.drawRect(g2d, this);
         
     }

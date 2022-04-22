@@ -72,5 +72,5 @@ public abstract class Shape {
         this.stroke = stroke;
     }
 
-    public abstract void draw(Drawable area, Graphics2D g2d);
+    public abstract void draw(IDrawable area, Graphics2D g2d);
 }

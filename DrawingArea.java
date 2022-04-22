@@ -7,23 +7,33 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class DrawingArea extends JPanel implements Drawable {
-    private Manager manager;
+/**
+ * Lớp này là khu vực để vẽ các shape lên màn hình. 
+ */
+public class DrawingArea extends JPanel implements IDrawable {
+    private IDrawingManager manager;
     private BufferedImage canvas;
 
     public DrawingArea() {
         setVisible(true);
         setDoubleBuffered(true);
-        //Graphics2D g = (Graphics2D) getGraphics();
-        // if (g == null) {
-
-        // repaint();
     }
 
-    public void setManager(Manager manager) {
+    
+    /** 
+     * Hàm này dùng để set lớp DrawingManager cụ thể chịu trách nhiệm cho DrawingArea này.
+     * @param manager DrawingManager cụ thể chịu trách nhiệm cho DrawingArea này.
+     */
+    public void setManager(IDrawingManager manager) {
         this.manager = manager;
     }
 
+    
+    /** 
+     * Hàm này thực hiện việc vẽ được thực hiện như thế nào.
+     * Đầu tiên là vẽ ảnh nền, rồi đến các shape đã vẽ, rồi đến preview shape.
+     * @param g Graphics được vẽ lên.
+     */
     protected void paintComponent(Graphics g) {
         System.out.println("paint");
         super.paintComponent(g);
@@ -49,6 +59,12 @@ public class DrawingArea extends JPanel implements Drawable {
         }
     }
 
+    
+    /** 
+     * Hàm vẽ đường theo trỏ chuột
+     * @param g2d Graphics2D được vẽ lên.
+     * @param line Line cần vẽ vào g2d.
+     */
     @Override
     public void drawLine(Graphics2D g2d, PencilLine line) {
         g2d.setColor(line.getColor());
@@ -58,6 +74,12 @@ public class DrawingArea extends JPanel implements Drawable {
         }
     }
 
+    
+    /** 
+     * Hàm vẽ hình chữ nhật
+     * @param g2d Graphics2D được vẽ lên.
+     * @param rect Hình chữ nhật cần vẽ vào g2d.
+     */
     @Override
     public void drawRect(Graphics2D g2d, Rectangle rect) {
         g2d.setColor(rect.getColor());

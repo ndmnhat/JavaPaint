@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
 
-public class DrawingManager implements Manager {
+public class DrawingManager implements IDrawingManager {
+    private ArrayList<IDrawingManagerEventListener> eventListeners;
     private int currentToolIndex;
     private ArrayList<DrawingTool> tools;
     private DrawingArea drawingArea;
@@ -37,24 +38,29 @@ public class DrawingManager implements Manager {
 
         shapes = new Stack<Shape>();
         previewShapes = new Stack<Shape>();
+        undoShapes = new Stack<Shape>();
     }
     public int getCurrentThickness() {
         return currentThickness;
     }
     public void setCurrentThickness(int currentThickness) {
         this.currentThickness = currentThickness;
+        notifyThicknessChanged(currentThickness);
     }
     public Color getCurrentFillColor() {
         return currentFillColor;
     }
     public void setCurrentFillColor(Color currentFillColor) {
         this.currentFillColor = currentFillColor;
+        notifyfillColorChanged(currentFillColor);
     }
     public Color getCurrentColor() {
         return currentColor;
     }
     public void setCurrentColor(Color currentColor) {
         this.currentColor = currentColor;
+        notifyColorChanged(currentColor);
+
     }
     @Override
     public void draw() {
@@ -82,6 +88,8 @@ public class DrawingManager implements Manager {
     public void undo() {
         if (shapes.size() > 0) {
             undoShapes.push(shapes.pop());
+            notifyUndoShapesChanged(undoShapes.size());
+            notifyShapesChanged(shapes.size());
         }
         draw();
     }
@@ -89,12 +97,18 @@ public class DrawingManager implements Manager {
     public void redo() {
         if (undoShapes.size() > 0) {
             shapes.push(undoShapes.pop());
+            notifyUndoShapesChanged(undoShapes.size());
+            notifyShapesChanged(shapes.size());
         }
         draw();
     }
 
     public int getUndoCount() {
         return undoShapes.size();
+    }
+
+    public int getShapesCount() {
+        return shapes.size();
     }
 
     @Override
@@ -106,6 +120,8 @@ public class DrawingManager implements Manager {
     public void addShape(Shape shape) {
         shapes.push(shape);
         undoShapes.clear();
+        notifyUndoShapesChanged(undoShapes.size());
+        notifyShapesChanged(shapes.size());
     }
 
     @Override
@@ -121,5 +137,42 @@ public class DrawingManager implements Manager {
     @Override
     public void clearPreviewShapes() {
         previewShapes.clear();
+    }
+
+    public void addEventListener(IDrawingManagerEventListener listener) {
+        if (eventListeners == null) {
+            eventListeners = new ArrayList<IDrawingManagerEventListener>();
+        }
+        eventListeners.add(listener);
+    }
+
+    private void notifyColorChanged(Color newColor) {
+        for (IDrawingManagerEventListener listener : eventListeners) {
+            listener.colorChanged(newColor);
+        }
+    }
+    
+    private void notifyfillColorChanged(Color newColor) {
+        for (IDrawingManagerEventListener listener : eventListeners) {
+            listener.fillColorChanged(newColor);
+        }
+    }
+
+    private void notifyThicknessChanged(int newThickness) {
+        for (IDrawingManagerEventListener listener : eventListeners) {
+            listener.thicknessChanged(newThickness);
+        }
+    }
+
+    private void notifyUndoShapesChanged(int newSize) {
+        for (IDrawingManagerEventListener listener : eventListeners) {
+            listener.undoShapesChanged(newSize);
+        }
+    }
+
+    private void notifyShapesChanged(int newSize) {
+        for (IDrawingManagerEventListener listener : eventListeners) {
+            listener.shapesChanged(newSize);
+        }
     }
 }
