@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.Color;
 
 public interface IDrawingManagerEventListener {

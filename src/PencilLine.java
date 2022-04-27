@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -19,7 +21,7 @@ public class PencilLine extends Shape {
     
     /** 
      * Lấy các đường nhỏ trong 1 đường lớn được vẽ theo trỏ chuột
-     * @return Stack<Path>
+     * @return Stack<src.Path>
      */
     public Stack<Path> getPaths() {
         return this.paths;
@@ -36,7 +38,7 @@ public class PencilLine extends Shape {
 
     
     /** 
-     * Gọi đến hàm drawLine được định nghĩa bởi lớp hiện thực IDrawable
+     * Gọi đến hàm drawLine được định nghĩa bởi lớp hiện thực src.IDrawable
      * @param area
      * @param g2d
      */

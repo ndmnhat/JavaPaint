@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Các đường nhỏ trong 1 đường lớn được vẽ theo trỏ chuột
  */

@@ -1,8 +1,8 @@
+package src;
+
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Stack;
 
 public class DrawingManager implements IDrawingManager {
@@ -21,12 +21,10 @@ public class DrawingManager implements IDrawingManager {
     
     public DrawingManager() {
         drawingArea = new DrawingArea();
-        drawingArea.setPreferredSize(new Dimension(640, 480));
         drawingArea.setManager(this);
 
         PencilTool pencil = new PencilTool();
         pencil.setManager(this);
-
         RectangleTool rectTool = new RectangleTool();
         rectTool.setManager(this);
 
@@ -52,13 +50,14 @@ public class DrawingManager implements IDrawingManager {
     }
     public void setCurrentFillColor(Color currentFillColor) {
         this.currentFillColor = currentFillColor;
-        notifyfillColorChanged(currentFillColor);
+        notifyFillColorChanged(currentFillColor);
     }
     public Color getCurrentColor() {
         return currentColor;
     }
     public void setCurrentColor(Color currentColor) {
         this.currentColor = currentColor;
+        tools.get(currentToolIndex).setColor(this.currentColor);
         notifyColorChanged(currentColor);
 
     }
@@ -152,7 +151,7 @@ public class DrawingManager implements IDrawingManager {
         }
     }
     
-    private void notifyfillColorChanged(Color newColor) {
+    private void notifyFillColorChanged(Color newColor) {
         for (IDrawingManagerEventListener listener : eventListeners) {
             listener.fillColorChanged(newColor);
         }

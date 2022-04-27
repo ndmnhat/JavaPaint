@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.Color;
 
 public abstract class DrawingManagerEventAdapter implements IDrawingManagerEventListener{

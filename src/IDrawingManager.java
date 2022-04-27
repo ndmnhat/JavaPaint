@@ -1,9 +1,10 @@
+package src;
+
 import java.awt.Graphics2D;
-import java.util.Collection;
 import java.util.Stack;
 
 /** 
- * Interface cho DrawingManager
+ * Interface cho src.DrawingManager
  */
 public interface IDrawingManager {
     public void draw();

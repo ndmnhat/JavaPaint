@@ -1,7 +1,8 @@
+package src;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
@@ -21,8 +22,8 @@ public class DrawingArea extends JPanel implements IDrawable {
 
     
     /** 
-     * Hàm này dùng để set lớp DrawingManager cụ thể chịu trách nhiệm cho DrawingArea này.
-     * @param manager DrawingManager cụ thể chịu trách nhiệm cho DrawingArea này.
+     * Hàm này dùng để set lớp src.DrawingManager cụ thể chịu trách nhiệm cho src.DrawingArea này.
+     * @param manager src.DrawingManager cụ thể chịu trách nhiệm cho src.DrawingArea này.
      */
     public void setManager(IDrawingManager manager) {
         this.manager = manager;
@@ -39,12 +40,12 @@ public class DrawingArea extends JPanel implements IDrawable {
         super.paintComponent(g);
 
         if (canvas == null) {
-            canvas = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
+            canvas = new BufferedImage(2000, 1000, BufferedImage.TYPE_INT_ARGB);
             System.out.println(canvas);
             Graphics2D g2d = canvas.createGraphics();
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setPaint(Color.WHITE);
-            g2d.fillRect(0, 0, 800, 600);
+            g2d.fillRect(0, 0, 2000, 1000);
         }
 
         Graphics2D g2 = (Graphics2D) g;
