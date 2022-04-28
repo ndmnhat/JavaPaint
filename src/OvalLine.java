@@ -1,11 +1,9 @@
 package src;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 
-public class Rectangle extends Shape {
-    public Rectangle(int x1, int y1, int x2, int y2, Color color, Color fillColor, boolean isFilled, BasicStroke stroke) {
+public class OvalLine extends Shape {
+    public OvalLine(int x1, int y1, int x2, int y2, Color color, Color fillColor, boolean isFilled, BasicStroke stroke) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -18,6 +16,6 @@ public class Rectangle extends Shape {
 
     @Override
     public void draw(IDrawable area, Graphics2D g2d) {
-        area.drawRect(g2d, this);
+        area.drawOval(g2d, this);
     }
-} 
+}

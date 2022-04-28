@@ -36,7 +36,6 @@ public class DrawingArea extends JPanel implements IDrawable {
      * @param g Graphics được vẽ lên.
      */
     protected void paintComponent(Graphics g) {
-        System.out.println("paint");
         super.paintComponent(g);
 
         if (canvas == null) {
@@ -93,5 +92,19 @@ public class DrawingArea extends JPanel implements IDrawable {
         int height = Math.abs(rect.getY2() - rect.getY1());
         
         g2d.drawRect(startX, startY, width, height);
+    }
+
+    @Override
+    public void drawOval(Graphics2D g2d, OvalLine ovalLine) {
+        g2d.setColor(ovalLine.getColor());
+        g2d.setStroke(ovalLine.getStroke());
+
+        int startX = ovalLine.getX1() < ovalLine.getX2() ? ovalLine.getX1() : ovalLine.getX2();
+        int startY = ovalLine.getY1() < ovalLine.getY2() ? ovalLine.getY1() : ovalLine.getY2();
+
+        int width = Math.abs(ovalLine.getX2() - ovalLine.getX1());
+        int height = Math.abs(ovalLine.getY2() - ovalLine.getY1());
+
+        g2d.drawOval(startX, startY, width, height);
     }
 }

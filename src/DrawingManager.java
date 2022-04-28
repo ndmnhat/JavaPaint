@@ -27,11 +27,14 @@ public class DrawingManager implements IDrawingManager {
         pencil.setManager(this);
         RectangleTool rectTool = new RectangleTool();
         rectTool.setManager(this);
+        OvalLineTool ovalLineTool = new OvalLineTool();
+        ovalLineTool.setManager(this);
 
         currentToolIndex = 0;
         tools = new ArrayList<DrawingTool>();
         tools.add(pencil);
         tools.add(rectTool);
+        tools.add(ovalLineTool);
         setTool(0);
 
         shapes = new Stack<Shape>();

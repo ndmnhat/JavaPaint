@@ -1,21 +1,20 @@
 package src;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class RectangleTool extends DrawingTool {
+public class OvalLineTool extends DrawingTool {
     private boolean isDragging = false;
     private int startX1, startY1;
-    private Rectangle previewShape;
+    private OvalLine previewShape;
     public void mouseDragged(MouseEvent e) {
 
         if (!isDragging) {
             isDragging = true;
             startX1 = e.getX();
             startY1 = e.getY();
-            previewShape = new Rectangle(startX1, startY1, e.getX(), e.getY(), this.color, this.color, false,
+            previewShape = new OvalLine(startX1, startY1, e.getX(), e.getY(), this.color, this.color, false,
                     new BasicStroke(this.strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         }
