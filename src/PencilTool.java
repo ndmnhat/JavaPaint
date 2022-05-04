@@ -18,19 +18,20 @@ public class PencilTool extends DrawingTool {
      * @param e MouseEvent
      */
     public void mouseDragged(MouseEvent e) {
-        System.out.println("Mouse dragged" + isDragging);
         if (!isDragging) {
             isDragging = true;
             manager.clearPreviewShapes();
-            previewShape = new PencilLine(color, color,
+            previewShape = new PencilLine(manager.getCurrentColor(), manager.getCurrentColor(),
                     new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             manager.addPreviewShape(previewShape);
-            prevX1 = e.getX();
-            prevY1 = e.getY();
+            prevX1 = manager.getScaled(e.getX());
+            prevY1 = manager.getScaled(e.getY());
         }
-        previewShape.addPath(new Path(prevX1, prevY1, e.getX(), e.getY()));
-        prevX1 = e.getX();
-        prevY1 = e.getY();
+        int X = manager.getScaled(e.getX());
+        int Y = manager.getScaled(e.getY());
+        previewShape.addPath(new Path(prevX1, prevY1, X, Y));
+        prevX1 = manager.getScaled(e.getX());
+        prevY1 = manager.getScaled(e.getY());
         manager.draw();
     }
 

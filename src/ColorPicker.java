@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class ColorPicker extends JButton {
 
@@ -11,7 +12,8 @@ public class ColorPicker extends JButton {
     private Container container;
     private JButton pickColor;
     private JButton cancel;
-    public ColorPicker(DrawingManager drawingManager) {
+    private JColorChooser colorChooser;
+    public ColorPicker(IDrawingManager drawingManager) {
         dialog = new JDialog();
         pickColor = new JButton("Pick");
         cancel = new JButton("Cancel");
@@ -24,23 +26,21 @@ public class ColorPicker extends JButton {
             }
         });
 
-        this.setPreferredSize(new Dimension(30,30));
+        this.setPreferredSize(new Dimension(30, 30));
         this.setBackground(Color.BLACK);
 
-        dialog.setBounds(200,200,660,400);
+        dialog.setBounds(200, 200, 660, 400);
         container = dialog.getContentPane();
         container.setLayout(new FlowLayout());
 
-        JColorChooser colorChooser = new JColorChooser();
+        colorChooser = new JColorChooser();
         pickColor.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                drawingManager.setCurrentColor(colorChooser.getColor());
                 ColorPicker.this.setBackground(colorChooser.getColor());
                 dialog.setVisible(false);
             }
         });
-
 
         cancel.addMouseListener(new MouseAdapter() {
             @Override
@@ -52,6 +52,14 @@ public class ColorPicker extends JButton {
         container.add(colorChooser);
         container.add(cancel);
         container.add(pickColor);
+    }
+
+    public Color getChooserColor() {
+        return colorChooser.getColor();
+    }
+
+    public void addPickColorListener(MouseListener listener) {
+        pickColor.addMouseListener(listener);
     }
 }
 

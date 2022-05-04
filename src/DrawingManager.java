@@ -2,14 +2,18 @@ package src;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import javax.swing.JScrollPane;
 
 public class DrawingManager implements IDrawingManager {
     private ArrayList<IDrawingManagerEventListener> eventListeners;
     private int currentToolIndex;
     private ArrayList<DrawingTool> tools;
     private DrawingArea drawingArea;
+    private JScrollPane scrollPane;
     
     private Stack<Shape> shapes;
     private Stack<Shape> previewShapes;
@@ -18,11 +22,16 @@ public class DrawingManager implements IDrawingManager {
     private Color currentColor;
     private Color currentFillColor;
     private int currentThickness;
-    
+    private boolean isFilled;
+
     public DrawingManager() {
+        eventListeners = new ArrayList<IDrawingManagerEventListener>();
+
         drawingArea = new DrawingArea();
         drawingArea.setManager(this);
 
+        scrollPane = new JScrollPane(drawingArea);
+        
         PencilTool pencil = new PencilTool();
         pencil.setManager(this);
         RectangleTool rectTool = new RectangleTool();
@@ -40,10 +49,24 @@ public class DrawingManager implements IDrawingManager {
         shapes = new Stack<Shape>();
         previewShapes = new Stack<Shape>();
         undoShapes = new Stack<Shape>();
+
+        setCurrentColor(Color.BLACK);
+        setCurrentFillColor(Color.WHITE);
+        setIsFilled(false);
     }
+
+    public boolean getIsFilled() {
+        return isFilled;
+    }
+
+    public void setIsFilled(boolean isFilled) {
+        this.isFilled = isFilled;
+    }
+
     public int getCurrentThickness() {
         return currentThickness;
     }
+
     public void setCurrentThickness(int currentThickness) {
         this.currentThickness = currentThickness;
         notifyThicknessChanged(currentThickness);
@@ -67,6 +90,12 @@ public class DrawingManager implements IDrawingManager {
     @Override
     public void draw() {
         drawingArea.repaint();
+        revalidateViewport();
+    }
+
+    public void revalidateViewport() {
+        scrollPane.getViewport().revalidate();
+        scrollPane.getViewport().repaint();
     }
 
     @Override
@@ -85,6 +114,10 @@ public class DrawingManager implements IDrawingManager {
 
     public DrawingArea getDrawingArea() {
         return drawingArea;
+    }
+
+    public JScrollPane getScrollDrawingArea() {
+        return scrollPane;
     }
 
     public void undo() {
@@ -141,10 +174,8 @@ public class DrawingManager implements IDrawingManager {
         previewShapes.clear();
     }
 
+    @Override
     public void addEventListener(IDrawingManagerEventListener listener) {
-        if (eventListeners == null) {
-            eventListeners = new ArrayList<IDrawingManagerEventListener>();
-        }
         eventListeners.add(listener);
     }
 
@@ -177,4 +208,48 @@ public class DrawingManager implements IDrawingManager {
             listener.shapesChanged(newSize);
         }
     }
+
+    @Override
+    public void loadFile(File file) {
+        drawingArea.loadImage(file);
+        clearPreviewShapes();
+        shapes.clear();
+        undoShapes.clear();
+        notifyUndoShapesChanged(undoShapes.size());
+        notifyShapesChanged(shapes.size());
+        draw();
+    }
+
+    @Override
+    public void saveFileAs(File file) {
+        drawingArea.saveImageAs(file);
+    }
+
+    @Override
+    public void zoom(double addScale) {
+        drawingArea.setScale(drawingArea.getScale() + addScale);
+        draw();
+    }
+
+    @Override
+    public double getScale() {
+        return drawingArea.getScale();
+    }
+
+    @Override
+    public int getScaled(double value) {
+        return Utility.round(value / drawingArea.getScale());
+    }
+
+    @Override
+    public void newFile() {
+        drawingArea.newImage();
+        clearPreviewShapes();
+        shapes.clear();
+        undoShapes.clear();
+        notifyUndoShapesChanged(undoShapes.size());
+        notifyShapesChanged(shapes.size());
+        draw();
+    }
+    
 }

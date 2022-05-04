@@ -10,19 +10,18 @@ public class RectangleTool extends DrawingTool {
     private int startX1, startY1;
     private Rectangle previewShape;
     public void mouseDragged(MouseEvent e) {
-
         if (!isDragging) {
             isDragging = true;
-            startX1 = e.getX();
-            startY1 = e.getY();
-            previewShape = new Rectangle(startX1, startY1, e.getX(), e.getY(), this.color, this.color, false,
+            startX1 = manager.getScaled(e.getX());
+            startY1 = manager.getScaled(e.getY());
+            previewShape = new Rectangle(startX1, startY1, startX1, startY1, manager.getCurrentColor(), manager.getCurrentFillColor(), manager.getIsFilled(),
                     new BasicStroke(this.strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         }
 
         manager.clearPreviewShapes();
-        previewShape.setX2(e.getX());
-        previewShape.setY2(e.getY());
+        previewShape.setX2(manager.getScaled(e.getX()));
+        previewShape.setY2(manager.getScaled(e.getY()));
 
         // handle logic if SHIFT btn is pressed => draw square
         if (Keyboard.isKeyPressed(KeyEvent.VK_SHIFT)) {

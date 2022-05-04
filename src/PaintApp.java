@@ -20,29 +20,41 @@ public class PaintApp extends JFrame {
 
         // toolBox
         toolBox.setPreferredSize(new Dimension(TOOL_BOX_WIDTH,SCREEN_HEIGHT));
-
         // drawing area
-        DrawingArea drawingArea = drawingManager.getDrawingArea();
+        JScrollPane drawingArea = drawingManager.getScrollDrawingArea();
         drawingArea.setPreferredSize(new Dimension(SCREEN_WIDTH - 340, SCREEN_HEIGHT));
 
+        // menu bar
+        MenuBar menuBar = new MenuBar(drawingManager);
 
         // frame
         add(toolBox);
         add(drawingArea);
+        setJMenuBar(menuBar);
+
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
         setTitle("src.PaintApp");
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 dispose();
             }
         });
+        addMouseWheelListener(mouseWheelEvent -> {
+            if (mouseWheelEvent.isControlDown()) {
+                int scrolled = mouseWheelEvent.getUnitsToScroll();
+                drawingManager.zoom(-scrolled*0.05);
+            }
+        });
     }
 
     public static void main(String args[]) {
-        new PaintApp();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new PaintApp();
+            }
+        });
     }
-
 }

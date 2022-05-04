@@ -4,24 +4,30 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ToolBox extends JPanel {
-    private ColorPicker colorPicker;
+    private ColorPicker colorPicker, fillColorPicker;
     private JComboBox<String> comboBox;
     private ImageIcon undoIcon;
     private ImageIcon redoIcon;
     private JButton undo;
     private JButton redo;
+    private JCheckBox fillCheckBox;
 
-    public ToolBox(DrawingManager drawingManager) {
+    public ToolBox(IDrawingManager drawingManager) {
         colorPicker = new ColorPicker(drawingManager);
+        fillColorPicker = new ColorPicker(drawingManager);
+
         comboBox = new JComboBox<>(new String[] { "Pencil", "Rectangle", "Oval line" });
         undoIcon = new ImageIcon("./images/undo.png");
         redoIcon = new ImageIcon("./images/redo.png");
         undo = new JButton(undoIcon);
         redo = new JButton(redoIcon);
+        fillCheckBox = new JCheckBox("Filled");
 
         undo.setBackground(Color.white);
         undo.setPreferredSize(new Dimension(32,32));
@@ -50,6 +56,32 @@ public class ToolBox extends JPanel {
             }
         });
 
+        // color picker
+        colorPicker.setBackground(drawingManager.getCurrentColor());
+        colorPicker.addPickColorListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                drawingManager.setCurrentColor(colorPicker.getChooserColor());
+            }
+        });
+
+        // fill color picker
+        fillColorPicker.setBackground(drawingManager.getCurrentFillColor());
+        fillColorPicker.addPickColorListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                drawingManager.setCurrentFillColor(fillColorPicker.getChooserColor());
+            }
+        });
+
+        // fill checkbox
+        fillCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                drawingManager.setIsFilled(e.getStateChange() == 1);
+            }
+        });
+
         // drawing manager
         drawingManager.addEventListener(new DrawingManagerEventAdapter() {
             public void undoShapesChanged(int newSize) {
@@ -65,6 +97,8 @@ public class ToolBox extends JPanel {
         add(undo);
         add(redo);
         add(colorPicker);
+        add(fillColorPicker);
+        add(fillCheckBox);
         setBackground(Color.white);
         setLayout(new FlowLayout(FlowLayout.LEADING));
     }
