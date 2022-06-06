@@ -4,14 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 import javax.swing.JScrollPane;
 
 public class DrawingManager implements IDrawingManager {
     private ArrayList<IDrawingManagerEventListener> eventListeners;
-    private int currentToolIndex;
-    private ArrayList<DrawingTool> tools;
+    private String currentTool;
+    private HashMap<String, DrawingTool> tools;
     private DrawingArea drawingArea;
     private JScrollPane scrollPane;
     
@@ -34,17 +35,19 @@ public class DrawingManager implements IDrawingManager {
         
         PencilTool pencil = new PencilTool();
         pencil.setManager(this);
+        EraserTool eraser = new EraserTool();
+        eraser.setManager(this);
         RectangleTool rectTool = new RectangleTool();
         rectTool.setManager(this);
-        OvalLineTool ovalLineTool = new OvalLineTool();
-        ovalLineTool.setManager(this);
+        OvalTool ovalTool = new OvalTool();
+        ovalTool.setManager(this);
 
-        currentToolIndex = 0;
-        tools = new ArrayList<DrawingTool>();
-        tools.add(pencil);
-        tools.add(rectTool);
-        tools.add(ovalLineTool);
-        setTool(0);
+        tools = new HashMap<String, DrawingTool>();
+        tools.put(pencil.getToolName(), pencil);
+        tools.put(eraser.getToolName(), eraser);
+        tools.put(rectTool.getToolName(), rectTool);
+        tools.put(ovalTool.getToolName(), ovalTool);
+        setTool(pencil.getToolName());
 
         shapes = new Stack<Shape>();
         previewShapes = new Stack<Shape>();
@@ -52,6 +55,7 @@ public class DrawingManager implements IDrawingManager {
 
         setCurrentColor(Color.BLACK);
         setCurrentFillColor(Color.WHITE);
+        setCurrentThickness(5);
         setIsFilled(false);
     }
 
@@ -83,7 +87,6 @@ public class DrawingManager implements IDrawingManager {
     }
     public void setCurrentColor(Color currentColor) {
         this.currentColor = currentColor;
-        tools.get(currentToolIndex).setColor(this.currentColor);
         notifyColorChanged(currentColor);
 
     }
@@ -103,13 +106,16 @@ public class DrawingManager implements IDrawingManager {
         return (Graphics2D) drawingArea.getGraphics();
     }
     
-    public void setTool(int index) {
-        drawingArea.removeMouseListener(tools.get(currentToolIndex));
-        drawingArea.removeMouseMotionListener(tools.get(currentToolIndex));
+    public void setTool(String key) {
+        if (currentTool != null) {
+            drawingArea.removeMouseListener(tools.get(currentTool));
+            drawingArea.removeMouseMotionListener(tools.get(currentTool));
+        }
 
-        currentToolIndex = index;
-        drawingArea.addMouseListener(tools.get(index));
-        drawingArea.addMouseMotionListener(tools.get(index));
+        currentTool = key;
+        drawingArea.addMouseListener(tools.get(key));
+        drawingArea.addMouseMotionListener(tools.get(key));
+        notifyToolChanged(key);
     }
 
     public DrawingArea getDrawingArea() {
@@ -206,6 +212,12 @@ public class DrawingManager implements IDrawingManager {
     private void notifyShapesChanged(int newSize) {
         for (IDrawingManagerEventListener listener : eventListeners) {
             listener.shapesChanged(newSize);
+        }
+    }
+
+    private void notifyToolChanged(String newTool) {
+        for (IDrawingManagerEventListener listener : eventListeners) {
+            listener.toolChanged(newTool);
         }
     }
 

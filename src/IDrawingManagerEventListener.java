@@ -12,4 +12,6 @@ public interface IDrawingManagerEventListener {
     public void undoShapesChanged(int newSize);
 
     public void shapesChanged(int newSize);
+
+    public void toolChanged(String newTool);
 }

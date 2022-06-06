@@ -7,7 +7,9 @@ import javax.swing.*;
 
 public class PaintApp extends JFrame {
     private DrawingManager drawingManager;
-
+    private ToolBox toolBox;
+    private JScrollPane drawingArea;
+    private MenuBar menuBar;
     public PaintApp() {
         // constance
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -16,16 +18,15 @@ public class PaintApp extends JFrame {
         int SCREEN_WIDTH = (int)screenSize.getWidth();
         // init
         drawingManager = new DrawingManager();
-        ToolBox toolBox = new ToolBox(drawingManager);
+        toolBox = new ToolBox(drawingManager);
 
         // toolBox
         toolBox.setPreferredSize(new Dimension(TOOL_BOX_WIDTH,SCREEN_HEIGHT));
-        // drawing area
-        JScrollPane drawingArea = drawingManager.getScrollDrawingArea();
+        drawingArea = drawingManager.getScrollDrawingArea();
         drawingArea.setPreferredSize(new Dimension(SCREEN_WIDTH - 340, SCREEN_HEIGHT));
 
         // menu bar
-        MenuBar menuBar = new MenuBar(drawingManager);
+        menuBar = new MenuBar(drawingManager);
 
         // frame
         add(toolBox);
@@ -35,7 +36,7 @@ public class PaintApp extends JFrame {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
-        setTitle("src.PaintApp");
+        setTitle("JavaPaint");
         setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {

@@ -9,10 +9,10 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * Lớp này là khu vực để vẽ các shape lên màn hình. 
@@ -95,12 +95,18 @@ public class DrawingArea extends JPanel implements IDrawable {
         g2.scale(scale, scale);
         g2.drawImage(canvas, 0, 0, null);
 
-        for (Shape shape : manager.getShapes()) {
-            shape.draw(this, g2);
-        }
+        Stack<Shape> shapes = manager.getShapes();
+        Stack<Shape> previewShapes = manager.getPreviewShapes();
 
-        for (Shape shape : manager.getPreviewShapes()) {
-            shape.draw(this, g2);
+        if (shapes != null && shapes.size() > 0) {
+            for (Shape shape : shapes) {
+                shape.draw(this, g2);
+            }
+        }
+        if (previewShapes != null && previewShapes.size() > 0) {
+            for (Shape shape : previewShapes) {
+                shape.draw(this, g2);
+            }
         }
     }
 
@@ -147,7 +153,7 @@ public class DrawingArea extends JPanel implements IDrawable {
     }
 
     @Override
-    public void drawOval(Graphics2D g2d, OvalLine ovalLine) {
+    public void drawOval(Graphics2D g2d, Oval ovalLine) {
         int X1 = ovalLine.getX1();
         int Y1 = ovalLine.getY1();
         int X2 = ovalLine.getX2();

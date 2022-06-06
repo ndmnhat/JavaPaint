@@ -4,18 +4,18 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class OvalLineTool extends DrawingTool {
+public class OvalTool extends DrawingTool {
     private boolean isDragging = false;
     private int startX1, startY1;
-    private OvalLine previewShape;
+    private Oval previewShape;
     public void mouseDragged(MouseEvent e) {
 
         if (!isDragging) {
             isDragging = true;
             startX1 = manager.getScaled(e.getX());
             startY1 = manager.getScaled(e.getY());
-            previewShape = new OvalLine(startX1, startY1, startX1, startY1, manager.getCurrentColor(), manager.getCurrentFillColor(), manager.getIsFilled(),
-                    new BasicStroke(this.strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            previewShape = new Oval(startX1, startY1, startX1, startY1, manager.getCurrentColor(), manager.getCurrentFillColor(), manager.getIsFilled(),
+                    new BasicStroke(manager.getCurrentThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         }
 
@@ -44,5 +44,10 @@ public class OvalLineTool extends DrawingTool {
         manager.clearPreviewShapes();
         manager.draw();
         isDragging = false;
+    }
+
+    @Override
+    public String getToolName() {
+        return "Oval";
     }
 }

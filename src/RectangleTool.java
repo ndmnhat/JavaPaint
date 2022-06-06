@@ -1,7 +1,6 @@
 package src;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -15,7 +14,7 @@ public class RectangleTool extends DrawingTool {
             startX1 = manager.getScaled(e.getX());
             startY1 = manager.getScaled(e.getY());
             previewShape = new Rectangle(startX1, startY1, startX1, startY1, manager.getCurrentColor(), manager.getCurrentFillColor(), manager.getIsFilled(),
-                    new BasicStroke(this.strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                    new BasicStroke(manager.getCurrentThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         }
 
@@ -44,5 +43,10 @@ public class RectangleTool extends DrawingTool {
         manager.clearPreviewShapes();
         manager.draw();
         isDragging = false;
+    }
+
+    @Override
+    public String getToolName() {
+        return "Rectangle";
     }
 }

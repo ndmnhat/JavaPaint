@@ -1,17 +1,13 @@
 package src;
-
 import java.awt.BasicStroke;
 import java.awt.event.MouseEvent;
 
-/**
- * Công cụ vẽ theo trỏ chuột
- */
-public class PencilTool extends DrawingTool {
+public class EraserTool extends DrawingTool{
     private int prevX1, prevY1;
     private boolean isDragging = false;
     private PencilLine previewShape;
-    
-    /** 
+
+    /**
      * Xử lý khi người dùng kéo chuột
      * 
      * @param e MouseEvent
@@ -20,7 +16,7 @@ public class PencilTool extends DrawingTool {
         if (!isDragging) {
             isDragging = true;
             manager.clearPreviewShapes();
-            previewShape = new PencilLine(manager.getCurrentColor(), manager.getCurrentColor(),
+            previewShape = new PencilLine(manager.getCurrentFillColor(), manager.getCurrentFillColor(),
                     new BasicStroke(manager.getCurrentThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             manager.addPreviewShape(previewShape);
             prevX1 = manager.getScaled(e.getX());
@@ -34,7 +30,6 @@ public class PencilTool extends DrawingTool {
         manager.draw();
     }
 
-
     /**
      * Xử lý khi người dùng thả chuột
      * 
@@ -47,9 +42,8 @@ public class PencilTool extends DrawingTool {
         isDragging = false;
     }
 
-
     @Override
     public String getToolName() {
-        return "Pencil";
+        return "Eraser";
     }
 }

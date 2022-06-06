@@ -11,5 +11,5 @@ public interface IDrawable {
 
     public void drawRect(Graphics2D g2d, Rectangle rect);
 
-    void drawOval(Graphics2D g2g, OvalLine ovalLine);
+    void drawOval(Graphics2D g2g, Oval ovalLine);
 }

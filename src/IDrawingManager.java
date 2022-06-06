@@ -32,6 +32,10 @@ public interface IDrawingManager {
 
     public void setCurrentFillColor(Color currentFillColor);
 
+    public int getCurrentThickness();
+
+    public void setCurrentThickness(int currentThickness);
+
     public void loadFile(File file);
 
     public void saveFileAs(File file);
@@ -48,7 +52,7 @@ public interface IDrawingManager {
 
     public int getScaled(double value);
 
-    public void setTool(int selectedIndex);
+    public void setTool(String key);
 
     public int getUndoCount();
 

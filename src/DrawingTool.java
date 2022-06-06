@@ -1,6 +1,5 @@
 package src;
 
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 
 /**
@@ -8,8 +7,6 @@ import java.awt.event.MouseAdapter;
  */
 public abstract class DrawingTool extends MouseAdapter {
     protected IDrawingManager manager;
-    protected Color color = Color.BLACK;
-    protected int strokeWidth = 5;
     /**
      * Hàm này dùng để set lớp src.DrawingManager cụ thể chịu trách nhiệm cho
      * src.DrawingTool này.
@@ -20,19 +17,5 @@ public abstract class DrawingTool extends MouseAdapter {
         this.manager = manager;
     };
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public int getStrokeWidth() {
-        return strokeWidth;
-    }
-
-    public void setStrokeWidth(int strokeWidth) {
-        this.strokeWidth = strokeWidth;
-    }
+    abstract public String getToolName();
 }

@@ -22,4 +22,8 @@ public abstract class DrawingManagerEventAdapter implements IDrawingManagerEvent
     @Override
     public void shapesChanged(int newSize) {
     }
+
+    @Override
+    public void toolChanged(String newTool) {
+    }
 }
